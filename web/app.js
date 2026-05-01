@@ -3,7 +3,7 @@
 // In the Mapbox dashboard, restrict the token to your Vercel domain
 // (URL restrictions) so it can't be abused if copied.
 // Leave blank to use OpenStreetMap Nominatim only (weaker rural Canadian coverage).
-const MAPBOX_TOKEN = "pk.eyJ1IjoianNjaGVsbGVuYmVyZyIsImEiOiJjbW83cnBxcWQwYTc2MnBvYm9yMWV1ZHc2In0.wGQQcwNXlgGDqCxlDlWzCg";
+const MAPBOX_TOKEN = "pk.eyJ1IjoianNjaGVsbGVuYmVyZyIsImEiOiJjbW9tNnUwZXAwc3JkMnNvbnN6cGJoNGExIn0.fT1ttIu31hjx5PHQnFA3gQ";
 
 const LAYER_COLORS = {
   red_river_flood_1997:         "#d62728",
