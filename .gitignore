@@ -1,0 +1,17 @@
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*_files/
+*_cache/
+outputs/
+!outputs/.gitkeep
+property_flood_report.html
+
+/.quarto/
+**/*.quarto_ipynb
+
+.vercel/
+.DS_Store
+Thumbs.db
+.claude/settings.local.json

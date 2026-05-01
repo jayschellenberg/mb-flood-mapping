@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manitoba Flood Zone Screening</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Manitoba Flood Zone Screening</h1>
+    <p class="subtitle">Checks a subject property against published provincial flood extents. For appraisal context only.</p>
+  </header>
+
+  <div class="disclaimer">
+    <b>Disclaimer.</b> This tool is based on flood mapping published by the
+    <a href="https://geoportal.gov.mb.ca/" target="_blank" rel="noopener">Manitoba Government Data MB geoportal</a>
+    (1997/2009/2011 Red River flood extents; Manitoba 1-in-200 Year Flood Extent), the
+    <a href="https://mli.gov.mb.ca/adminbnd/index.html" target="_blank" rel="noopener">Manitoba Land Initiative</a>
+    (Red River Valley and Lower Red River Designated Flood Areas, under the Water Resources Administration Act s.17), and
+    <a href="https://natural-resources.canada.ca/science-data/science-research/natural-hazards/flood-mapping" target="_blank" rel="noopener">Natural Resources Canada</a>
+    (Canada Flood Map Inventory &mdash; a study-coverage index, not flood extents).
+    Polygons are simplified for display; geocoding is by <a href="https://www.mapbox.com/" target="_blank" rel="noopener">Mapbox</a> with an <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap Nominatim</a> fallback.
+    <b>Provided without warranty of any kind</b>, express or implied. Not a legal survey, engineering flood study, insurance
+    determination, or site-specific flood protection level assessment. Verify any determination against the authoritative source.
+    Per NRCan, the absence of an area from the Canada Flood Map Inventory does not mean no mapping exists.
+  </div>
+
+  <div class="layout">
+    <aside class="panel">
+      <label>Subject location
+        <input id="location" type="text" value="49.8872, -97.1308" placeholder="Civic address OR latitude, longitude" />
+      </label>
+      <p class="tip" style="margin-top:-6px;">Enter a civic address (e.g. "123 Main St, Winnipeg, MB") <b>OR</b> paste coordinates (lat, lon). From Google Maps: right-click a location, then click the coordinates at the top of the menu to copy them to clipboard.</p>
+      <label>Label for map pin <small style="font-weight:normal;color:#888;">(optional)</small>
+        <input id="label" type="text" value="Subject Property" placeholder="Subject label" />
+      </label>
+      <button id="screen">Set Subject Location</button>
+      <p id="status" class="tip"></p>
+      <p class="tip">Distances via Turf.js (spherical). Polygons simplified (~50 m) for responsiveness. Geocoding by OpenStreetMap Nominatim.</p>
+    </aside>
+
+    <main>
+      <section class="card">
+        <h2>Screening Conclusion</h2>
+        <div id="result-table-wrap" class="result-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>Interactive Map</h2>
+        <div id="map"></div>
+      </section>
+
+      <section class="card">
+        <h2>Appraisal Paragraph</h2>
+        <div id="paragraph" class="paragraph"></div>
+      </section>
+
+      <section class="card">
+        <div class="static-header">
+          <h2>Static Exhibit</h2>
+          <button id="refresh-png" class="secondary-btn" type="button">Generate Static Map</button>
+        </div>
+        <p class="tip">Click <b>Generate Static Map</b> to capture the current interactive-map view (extent, zoom, layers toggled). Then right-click the image and choose <b>Save Image As…</b> to drop it into a report.</p>
+        <div id="static-wrap"><img id="static-img" alt="Static flood-screening exhibit" /></div>
+        <p id="static-status" class="tip"></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7.1.0/turf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-simple-map-screenshoter@0.5.0/dist/leaflet-simple-map-screenshoter.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

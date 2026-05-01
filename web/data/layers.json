@@ -1,0 +1,82 @@
+[
+  {
+    "name": "red_river_flood_1997",
+    "label": "1997 Red River Flood (historical extent)",
+    "source": "Data MB (Manitoba Government)",
+    "url": "https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_1997/FeatureServer/0",
+    "refreshed": "2026-04-21",
+    "file": "red_river_flood_1997.geojson"
+  },
+  {
+    "name": "red_river_flood_2009",
+    "label": "2009 Red River Flood (historical extent)",
+    "source": "Data MB (Manitoba Government)",
+    "url": "https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Red_River_Flood_-_2009/FeatureServer/0",
+    "refreshed": "2026-04-21",
+    "file": "red_river_flood_2009.geojson"
+  },
+  {
+    "name": "red_river_flood_2011",
+    "label": "2011 Red River / Assiniboine Flood (historical extent)",
+    "source": "Data MB (Manitoba Government)",
+    "url": "https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_2011_metadata/FeatureServer/0",
+    "refreshed": "2026-04-21",
+    "file": "red_river_flood_2011.geojson"
+  },
+  {
+    "name": "mb_1in200_flood_extent",
+    "label": "Manitoba 1-in-200 Year Flood Extent (0.5% AEP)",
+    "source": "Manitoba Infrastructure",
+    "url": "https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Manitoba_1_in_200_Flood_Layer_v2/FeatureServer/0",
+    "refreshed": "2026-04-21",
+    "file": "mb_1in200_flood_extent.geojson"
+  },
+  {
+    "name": "dfa_all",
+    "label": "Designated Flood Area (Red River Valley DFA)",
+    "source": "Manitoba Land Initiative (WRA Act s.17)",
+    "url": "https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_des_flood_area_py_shp.zip",
+    "refreshed": "2026-04-21",
+    "file": "dfa_all.geojson"
+  },
+  {
+    "name": "dfa_lower_red_river",
+    "label": "Lower Red River Designated Flood Area",
+    "source": "Manitoba Land Initiative (WRA Act s.17)",
+    "url": "https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_lower_red_river_dfa_py_shp.zip",
+    "refreshed": "2026-04-21",
+    "file": "dfa_lower_red_river.geojson"
+  },
+  {
+    "name": "rrv_special_management_area",
+    "label": "Red River Valley Special Management Area",
+    "source": "Manitoba Land Initiative (Planning Act)",
+    "url": "https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_rrvsma_py_shp.zip",
+    "refreshed": "2026-04-21",
+    "file": "rrv_special_management_area.geojson"
+  },
+  {
+    "name": "wpg_waterway_river_corridor",
+    "label": "Winnipeg Waterway Corridor — Rivers (107 m regulated area)",
+    "source": "Derived from OpenStreetMap (City of Winnipeg Waterway By-law 5888/92)",
+    "url": "https://legacy.winnipeg.ca/ppd/CityPlanning/Riverbank/WaterwayPermitApplications.stm",
+    "refreshed": "2026-04-21",
+    "file": "wpg_waterway_river_corridor.geojson"
+  },
+  {
+    "name": "wpg_waterway_creek_corridor",
+    "label": "Winnipeg Waterway Corridor — Creeks (76 m regulated area)",
+    "source": "Derived from OpenStreetMap (City of Winnipeg Waterway By-law 5888/92)",
+    "url": "https://legacy.winnipeg.ca/ppd/CityPlanning/Riverbank/WaterwayPermitApplications.stm",
+    "refreshed": "2026-04-21",
+    "file": "wpg_waterway_creek_corridor.geojson"
+  },
+  {
+    "name": "nrcan_flood_studies",
+    "label": "NRCan Flood Study Coverage (Manitoba)",
+    "source": "NRCan Canada Flood Map Inventory",
+    "url": "https://maps-cartes.services.geo.ca/server_serveur/rest/services/NRCan/canada_flood_map_inventory_en/MapServer/0",
+    "refreshed": "2026-04-21",
+    "file": "nrcan_flood_studies.geojson"
+  }
+]

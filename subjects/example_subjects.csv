@@ -1,0 +1,6 @@
+job_id,address,lat,lon,expected
+STE-AGATHE-IN,"Ste. Agathe, MB (in 1997 flood)",49.5602,-97.1780,inside
+MORRIS-IN,"Morris, MB (Red River Valley)",49.3567,-97.3622,inside
+SELKIRK-NEAR,"Selkirk, MB (near Red River)",50.1437,-96.8839,variable
+WINNIPEG-DT,"Winnipeg CBD (inside floodway ring)",49.8951,-97.1384,variable
+BRANDON-DT,"Brandon, MB (dry)",49.8437,-99.9518,outside

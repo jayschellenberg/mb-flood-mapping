@@ -1,0 +1,111 @@
+layers:
+- name: red_river_flood_1997
+  label: 1997 Red River Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_1997/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: 6439f9c0cf6cc119140dec8f722074d76aabed8e40b2c406bda511c2e880dd9e
+  refreshed_iso: 2026-04-21T08:13:43-0500
+  file: data/red_river_flood_1997.geojson
+- name: red_river_flood_2009
+  label: 2009 Red River Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Red_River_Flood_-_2009/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: c36603d7d5e8c6f5a92b2fbbae8c6b7e2f7daa733648092f72074db1ca45ed8a
+  refreshed_iso: 2026-04-21T08:13:46-0500
+  file: data/red_river_flood_2009.geojson
+- name: red_river_flood_2011
+  label: 2011 Red River / Assiniboine Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_2011_metadata/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: d7ccdedecc8056a6577878159f2ddfe90bd43093823d8b6e4b6ff13a6ba9f8ac
+  refreshed_iso: 2026-04-21T08:13:47-0500
+  file: data/red_river_flood_2011.geojson
+- name: mb_1in200_flood_extent
+  label: Manitoba 1-in-200 Year Flood Extent (0.5% AEP)
+  kind: arcgis
+  source: Manitoba Infrastructure
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Manitoba_1_in_200_Flood_Layer_v2/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 13
+  sha256: c67897e65bebe7ad938224266d2c90b1a9954662062c79661fd40c8f76cdf89b
+  refreshed_iso: 2026-04-21T08:21:46-0500
+  file: data/mb_1in200_flood_extent.geojson
+- name: dfa_all
+  label: Designated Flood Area (Red River Valley DFA)
+  kind: mli_shp
+  source: Manitoba Land Initiative (WRA Act s.17)
+  url: https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_des_flood_area_py_shp.zip
+  native_crs: EPSG:26914
+  feature_count: 1
+  sha256: ca8be1fae00dad8235d62aa5c104a5666a38fbcc4df23f2fe1bad79a1bfc68ab
+  refreshed_iso: 2026-04-21T08:21:47-0500
+  file: data/dfa_all.geojson
+- name: dfa_lower_red_river
+  label: Lower Red River Designated Flood Area
+  kind: mli_shp
+  source: Manitoba Land Initiative (WRA Act s.17)
+  url: https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_lower_red_river_dfa_py_shp.zip
+  native_crs: EPSG:26914
+  feature_count: 1
+  sha256: 2b44af3fec8ab4b89eb4ef01cca4b19ad093092d57e7ac4c81ac69fbb19c00f0
+  refreshed_iso: 2026-04-21T08:21:47-0500
+  file: data/dfa_lower_red_river.geojson
+- name: nrcan_flood_studies
+  label: NRCan Flood Study Coverage (Manitoba)
+  kind: cfm_mb
+  source: NRCan Canada Flood Map Inventory
+  url: https://maps-cartes.services.geo.ca/server_serveur/rest/services/NRCan/canada_flood_map_inventory_en/MapServer/0
+  native_crs: EPSG:4326
+  feature_count: 19
+  sha256: e85738466f23633f981520d0627f9573762b194c3969b868f2bfac23c642c9d2
+  refreshed_iso: 2026-04-21T08:21:50-0500
+  file: data/nrcan_flood_studies.geojson
+- name: rrv_special_management_area
+  label: Red River Valley Special Management Area
+  kind: mli_shp
+  source: Manitoba Land Initiative (Planning Act)
+  url: https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_rrvsma_py_shp.zip
+  native_crs: EPSG:26914
+  feature_count: 1
+  sha256: e9e8914ccbcf1460e916e9eff84a4c864e9c52b012b3561b1e82c75407f4235a
+  refreshed_iso: 2026-04-21T08:23:03-0500
+  file: data/rrv_special_management_area.geojson
+- name: wpg_waterway_river_corridor
+  label: Winnipeg Waterway Corridor — Rivers (107 m regulated area)
+  kind: derived_osm_buffer
+  source: Derived from OpenStreetMap (City of Winnipeg Waterway By-law 5888/92)
+  url: https://legacy.winnipeg.ca/ppd/CityPlanning/Riverbank/WaterwayPermitApplications.stm
+  native_crs: EPSG:4326
+  feature_count: 1
+  sha256: ef1c6432c9c5519efe69d7e0a69a9cdd72c41cd75ffe6366b6859f199fdaf0e7
+  refreshed_iso: 2026-04-21T09:06:41-0500
+  file: data/wpg_waterway_river_corridor.geojson
+- name: wpg_waterway_creek_corridor
+  label: Winnipeg Waterway Corridor — Creeks (76 m regulated area)
+  kind: derived_osm_buffer
+  source: Derived from OpenStreetMap (City of Winnipeg Waterway By-law 5888/92)
+  url: https://legacy.winnipeg.ca/ppd/CityPlanning/Riverbank/WaterwayPermitApplications.stm
+  native_crs: EPSG:4326
+  feature_count: 1
+  sha256: 91a0548c494ddae80c345a86c7f3d854c057ada15365593c09605c084bd263f4
+  refreshed_iso: 2026-04-21T09:06:41-0500
+  file: data/wpg_waterway_creek_corridor.geojson
+- name: winnipeg_boundary
+  label: City of Winnipeg boundary
+  kind: nominatim
+  source: OpenStreetMap Nominatim (administrative boundary)
+  url: https://nominatim.openstreetmap.org/
+  native_crs: EPSG:4326
+  feature_count: 1
+  sha256: 4abde7ba3474aa6f7a1f6a949712d0e10562d8e0b6941afbd4e617e4d0fcfc31
+  refreshed_iso: 2026-04-21T09:06:41-0500
+  file: data/winnipeg_boundary.geojson

@@ -1,0 +1,180 @@
+---
+title: "Flood Zone Screening"
+format:
+  html:
+    embed-resources: true
+    toc: false
+    page-layout: full
+params:
+  lat: 49.883400567909774
+  lon: -96.93126342501104
+  address: "Cobalt Road"
+  job_id: "26029115"
+  zoom: 11
+  proximity_threshold_m: 500
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+suppressPackageStartupMessages({
+  library(sf)
+  library(leaflet)
+  library(dplyr)
+  library(gt)
+  library(htmltools)
+})
+source("R/analyze_subject.R")
+
+result <- analyze_subject(
+  lat = params$lat,
+  lon = params$lon,
+  data_dir = "data",
+  proximity_threshold_m = params$proximity_threshold_m
+)
+```
+
+::: {style="font-family:system-ui; margin-bottom:1em;"}
+**Job:** `r params$job_id` &nbsp;·&nbsp; **Address:** `r params$address`
+**Subject coordinates:** `r sprintf("%.5f, %.5f", params$lat, params$lon)` &nbsp;·&nbsp; **Rendered:** `r format(Sys.Date())`
+:::
+
+## Screening Conclusion
+
+```{r conclusion-table}
+result$table |>
+  mutate(
+    `Subject inside?` = ifelse(is.na(inside), "—", ifelse(inside, "Yes", "No")),
+    `Nearest extent (m)` = ifelse(is.na(nearest_m), "—",
+                                  ifelse(nearest_m == 0, "0 (within)",
+                                         format(round(nearest_m), big.mark = ",")))
+  ) |>
+  select(Layer = layer, `Subject inside?`, `Nearest extent (m)`, Source = source, Refreshed = refreshed, Note = note) |>
+  gt() |>
+  tab_style(
+    style = list(cell_fill(color = "#ffe5e5"), cell_text(weight = "bold")),
+    locations = cells_body(
+      columns = `Subject inside?`,
+      rows = `Subject inside?` == "Yes"
+    )
+  ) |>
+  tab_options(table.font.size = px(13), data_row.padding = px(4))
+```
+
+## Copy-Ready Appraisal Paragraph
+
+::: {style="border:1px solid #bbb; padding:12px 16px; background:#f8f8f8; border-radius:6px; font-family:Georgia,serif; line-height:1.5;"}
+`r result$paragraph`
+:::
+
+## Interactive Map
+
+```{r leaflet-map}
+#| out-width: "100%"
+#| out-height: "720px"
+layer_files <- list(
+  `1997 Flood`                              = list(path = "data/red_river_flood_1997.geojson",        color = "#d62728"),
+  `2009 Flood`                              = list(path = "data/red_river_flood_2009.geojson",        color = "#ff7f0e"),
+  `2011 Flood`                              = list(path = "data/red_river_flood_2011.geojson",        color = "#1f77b4"),
+  `1-in-200 Extent`                         = list(path = "data/mb_1in200_flood_extent.geojson",      color = "#9467bd"),
+  `Red River Valley DFA`                    = list(path = "data/dfa_all.geojson",                     color = "#2ca02c"),
+  `Lower Red River DFA`                     = list(path = "data/dfa_lower_red_river.geojson",         color = "#17becf"),
+  `RRV Special Management Area`             = list(path = "data/rrv_special_management_area.geojson", color = "#8a6d3b"),
+  `Winnipeg Waterway — Rivers (107 m)`      = list(path = "data/wpg_waterway_river_corridor.geojson", color = "#1e88e5"),
+  `Winnipeg Waterway — Creeks (76 m)`       = list(path = "data/wpg_waterway_creek_corridor.geojson", color = "#5ebadf")
+)
+
+popup_html <- sprintf("<b>%s</b><br/>%.5f, %.5f", params$address, params$lat, params$lon)
+
+red_icon <- awesomeIcons(icon = "home", library = "fa",
+                         markerColor = "red", iconColor = "white")
+
+m <- leaflet() |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") |>
+  addProviderTiles(providers$CartoDB.Positron, group = "Roads") |>
+  setView(lng = params$lon, lat = params$lat, zoom = params$zoom) |>
+  addScaleBar(position = "bottomleft")
+
+for (nm in names(layer_files)) {
+  f <- layer_files[[nm]]
+  if (!file.exists(f$path)) next
+  poly <- read_sf(f$path, quiet = TRUE) |> st_transform(4326)
+  m <- addPolygons(m, data = poly,
+                   color = f$color, weight = 1.5, opacity = 0.9,
+                   fillColor = f$color, fillOpacity = 0.30,
+                   group = nm, label = nm)
+}
+
+m <- m |>
+  addAwesomeMarkers(lng = params$lon, lat = params$lat,
+                    icon = red_icon,
+                    popup = popup_html,
+                    label = params$address,
+                    labelOptions = labelOptions(permanent = TRUE, direction = "top",
+                                                offset = c(0, -40),
+                                                style = list("font-weight" = "bold"))) |>
+  addLayersControl(
+    baseGroups = c("Roads", "Satellite"),
+    overlayGroups = names(layer_files),
+    options = layersControlOptions(collapsed = FALSE)
+  ) |>
+  addLegend(
+    position = "bottomright",
+    colors = unname(sapply(layer_files, `[[`, "color")),
+    labels = names(layer_files),
+    opacity = 0.7,
+    title = "Flood layers"
+  ) |>
+  hideGroup("RRV Special Management Area")
+
+m
+```
+
+## Static Exhibit (PNG)
+
+```{r export-png}
+#| eval: !expr 'requireNamespace("webshot2", quietly = TRUE)'
+slug <- function(x) gsub("_+", "_", gsub("[^A-Za-z0-9]+", "_", trimws(x)))
+png_path <- file.path("outputs", params$job_id)
+dir.create(png_path, recursive = TRUE, showWarnings = FALSE)
+png_name <- sprintf("%s_%s.png", slug(params$job_id), slug(params$address))
+png_file <- file.path(png_path, png_name)
+tryCatch({
+  m_png <- m
+  m_png$width  <- 900
+  m_png$height <- 500
+  tmp_html <- tempfile(fileext = ".html")
+  htmlwidgets::saveWidget(m_png, tmp_html, selfcontained = TRUE)
+  webshot2::webshot(tmp_html, file = png_file,
+                    vwidth = 900, vheight = 500, zoom = 1.5,
+                    cliprect = "viewport", delay = 1)
+  cat("PNG exhibit saved to:", png_file, "\n")
+}, error = function(e) {
+  cat("PNG export failed:", conditionMessage(e), "\n")
+})
+```
+
+
+## Sources & Methodology
+
+```{r sources}
+layers_meta <- yaml::read_yaml("data/layers.yml")$layers
+tibble::tibble(
+  Layer    = vapply(layers_meta, function(x) x$label, character(1)),
+  Source   = vapply(layers_meta, function(x) x$source, character(1)),
+  CRS      = vapply(layers_meta, function(x) x$native_crs, character(1)),
+  Features = vapply(layers_meta, function(x) x$feature_count, integer(1)),
+  Refreshed = vapply(layers_meta, function(x) substr(x$refreshed_iso, 1, 10), character(1)),
+  URL      = vapply(layers_meta, function(x) x$url, character(1))
+) |>
+  gt() |>
+  fmt_url(columns = URL, label = "link") |>
+  tab_options(table.font.size = px(11), data_row.padding = px(2))
+```
+
+::: {style="font-size:11px; color:#666; margin-top:1em;"}
+Distances computed in EPSG:3347 (Statistics Canada Lambert). Subject inside-test uses `sf::st_within`; nearest-extent uses `sf::st_distance`.
+The Manitoba 1-in-200 year flood extent layer is served with geometry simplification (~50 m tolerance) to keep the cached file compact; boundary determinations within ~50 m of the extent edge should be verified against the authoritative source.
+:::

@@ -1,0 +1,61 @@
+layers:
+- name: red_river_flood_1997
+  label: 1997 Red River Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_1997/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: 6439f9c0cf6cc119140dec8f722074d76aabed8e40b2c406bda511c2e880dd9e
+  refreshed_iso: 2026-04-20T14:40:24-0500
+  file: data/red_river_flood_1997.geojson
+- name: red_river_flood_2009
+  label: 2009 Red River Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Red_River_Flood_-_2009/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: c36603d7d5e8c6f5a92b2fbbae8c6b7e2f7daa733648092f72074db1ca45ed8a
+  refreshed_iso: 2026-04-20T14:40:25-0500
+  file: data/red_river_flood_2009.geojson
+- name: red_river_flood_2011
+  label: 2011 Red River / Assiniboine Flood (historical extent)
+  kind: arcgis
+  source: Data MB (Manitoba Government)
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/img_red_river_flood_2011_metadata/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 1
+  sha256: d7ccdedecc8056a6577878159f2ddfe90bd43093823d8b6e4b6ff13a6ba9f8ac
+  refreshed_iso: 2026-04-20T14:40:26-0500
+  file: data/red_river_flood_2011.geojson
+- name: mb_1in200_flood_extent
+  label: Manitoba 1-in-200 Year Flood Extent (0.5% AEP)
+  kind: arcgis
+  source: Manitoba Infrastructure
+  url: https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Manitoba_1_in_200_Flood_Layer_v2/FeatureServer/0
+  native_crs: EPSG:102100
+  feature_count: 13
+  sha256: c67897e65bebe7ad938224266d2c90b1a9954662062c79661fd40c8f76cdf89b
+  refreshed_iso: 2026-04-20T14:45:19-0500
+  file: data/mb_1in200_flood_extent.geojson
+- name: dfa_all
+  label: Designated Flood Area (Red River Valley DFA)
+  kind: mli_shp
+  source: Manitoba Land Initiative (WRA Act s.17)
+  url: https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_des_flood_area_py_shp.zip
+  native_crs: EPSG:26914
+  feature_count: 1
+  sha256: ca8be1fae00dad8235d62aa5c104a5666a38fbcc4df23f2fe1bad79a1bfc68ab
+  refreshed_iso: 2026-04-20T14:45:20-0500
+  file: data/dfa_all.geojson
+- name: dfa_lower_red_river
+  label: Lower Red River Designated Flood Area
+  kind: mli_shp
+  source: Manitoba Land Initiative (WRA Act s.17)
+  url: https://mli.gov.mb.ca/adminbnd/shp_zip_files/bdy_lower_red_river_dfa_py_shp.zip
+  native_crs: EPSG:26914
+  feature_count: 1
+  sha256: 2b44af3fec8ab4b89eb4ef01cca4b19ad093092d57e7ac4c81ac69fbb19c00f0
+  refreshed_iso: 2026-04-20T14:45:20-0500
+  file: data/dfa_lower_red_river.geojson
