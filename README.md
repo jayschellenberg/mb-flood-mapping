@@ -58,6 +58,21 @@ If you only have a civic address, swap the `lat`/`lon` calls for `url.searchPara
 
 The waterway corridors are derived: river/creek centrelines from OpenStreetMap (Overpass), buffered by the by-law distances, and clipped to the Winnipeg boundary.
 
+### Source status — MLI is a frozen archive (checked 2026-08-12)
+
+Layers 5, 6 and 7 are pulled from `mli.gov.mb.ca` shapefile zips. The [Manitoba Land Initiative homepage](https://mli.gov.mb.ca/) states that **"As of February 9, 2022, the datasets available on the Manitoba Land Initiative will no longer be updated"** and redirects to [DataMB](https://geoportal.gov.mb.ca/). The zips still download, so `R/refresh_flood_data.R` keeps succeeding — it just re-fetches 2022-vintage bytes and stamps them with today's date. **An annual re-pull of these three layers is not evidence that the boundary is current.**
+
+Two of the three are statutory boundaries quoted in client-facing text, so a regulation change would surface on DataMB, never on MLI. What is there today:
+
+| Layer | DataMB equivalent | Newer than MLI? |
+|---|---|---|
+| Designated Flood Areas (5 + 6) | `Manitoba Designated Flood Areas` — [`DFA_final/FeatureServer/0`](https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/DFA_final/FeatureServer/0), item `0cd6ad6248894823b7578e4004d0d7d1` | **Yes** — data last edited 2025-04-02 (item created 2024-08-13) |
+| Red River Valley SMA (7) | `Red River Valley Special Management Area` — [`FeatureServer/0`](https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Red_River_Valley_Special_Management_Area/FeatureServer/0), item `1a215a9ccfca4d7d815cabbf0fef3f71` | No — data last edited 2022-01-31, before the freeze |
+
+Both are public under the Manitoba Open Data Licence and live on the same ArcGIS org already used for layers 1–4. Note the DFA repoint is **not** a URL swap: DataMB merges both DFAs into one 2-feature layer keyed on `Designated_Flood_Area_Zone`, changing schema, feature counts and the source citation carried into the report footer. Authoritative cross-check: [MTI Designated Flood Areas](https://www.gov.mb.ca/mti/wms/permit/designated.html) (PDF/KMZ boundary maps).
+
+**The sources have deliberately not been repointed** — that is Jason's call, not a maintenance edit. Full detail is in the header of `R/refresh_flood_data.R`.
+
 ## Requirements
 
 - R 4.3+ with packages: `sf`, `leaflet`, `dplyr`, `tibble`, `gt`, `htmltools`, `httr2`, `jsonlite`, `yaml`, `digest`, `rprojroot`, `quarto`, `optparse`, `knitr`, `rmapshaper` (web simplification), `webshot2` (PNG export, optional).
@@ -73,9 +88,11 @@ Rscript R/refresh_flood_data.R
 # 2. Build the three Winnipeg-derived layers (waterway corridors + boundary)
 Rscript R/fetch_winnipeg_waterway_corridors.R
 
-# 3. (Optional) Build the simplified web payload from data/ -> web/data/
+# 3. Build the simplified web payload from data/ -> web/data/
 Rscript R/simplify_for_web.R
 ```
+
+Step 3 is only skippable if the web app is not deployed. Running steps 1–2 without step 3 leaves the live Vercel app serving the previous geometry *and* printing the previous "as of" date in its client-facing caveat; `flood-staleness-check.ps1` now detects exactly that and raises a separate **DRIFT** alert.
 
 Step 1 takes ~5 minutes — the 1-in-200 layer is fetched per-OID with ~50 m geometry simplification and ArcGIS 429 rate-limit handling. Step 2 hits Overpass + Nominatim. Step 3 simplifies polygons aggressively (3–30 % vertex retention by layer) so the entire web payload fits in ~500 KB.
 

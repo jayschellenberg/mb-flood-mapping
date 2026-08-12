@@ -1,6 +1,69 @@
 #!/usr/bin/env Rscript
 # Refresh all Manitoba flood layers into ./data and write ./data/layers.yml
 
+# =============================================================================
+# WARNING (recorded 2026-08-12): THE MLI SOURCE BELOW IS A FROZEN ARCHIVE.
+# =============================================================================
+# Three of the eight layers this script pulls -- dfa_all, dfa_lower_red_river
+# and rrv_special_management_area -- come from mli.gov.mb.ca shapefile zips.
+# The Manitoba Land Initiative homepage (https://mli.gov.mb.ca/, checked
+# 2026-08-12) states verbatim:
+#
+#     "As of February 9, 2022, the datasets available on the Manitoba Land
+#      Initiative will no longer be updated."
+#
+# and redirects users to DataMB (https://geoportal.gov.mb.ca/, contact
+# ManitobaMaps@gov.mb.ca). The zips still download, so this script keeps
+# succeeding -- it just re-fetches 2022-vintage bytes and stamps them with
+# today's date in data/layers.yml. That is the dangerous failure mode: the
+# annual re-pull LOOKS like a refresh, and the staleness watchdog goes green.
+#
+# It matters because two of those three are STATUTORY boundaries quoted in
+# client-facing appraisal text -- the Designated Flood Areas (Water Resources
+# Administration Act s.17) and the Red River Valley Special Management Area
+# (Planning Act). If either is changed by regulation, the change will appear on
+# DataMB and never on MLI.
+#
+# WHAT EXISTS ON DataMB TODAY (checked 2026-08-12; both public, Manitoba Open
+# Data Licence, owner Manitoba_Government, and hosted on the SAME ArcGIS org
+# this script already uses for the 1997 / 2009 / 2011 / 1-in-200 layers):
+#
+#   "Manitoba Designated Flood Areas"  --  NEWER THAN THE MLI COPY
+#     https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/DFA_final/FeatureServer/0
+#     portal item 0cd6ad6248894823b7578e4004d0d7d1
+#     ONE layer holding BOTH DFAs as 2 polygons, separated by the field
+#     Designated_Flood_Area_Zone -- not the two separate files MLI ships.
+#     Item created 2024-08-13. Layer editingInfo: dataLastEditDate 2025-04-02,
+#     lastEditDate 2026-03-03 -- edits that post-date the MLI freeze by years.
+#
+#   "Red River Valley Special Management Area"  --  NOT newer
+#     https://services.arcgis.com/mMUesHYPkXjaFGfS/arcgis/rest/services/Red_River_Valley_Special_Management_Area/FeatureServer/0
+#     portal item 1a215a9ccfca4d7d815cabbf0fef3f71
+#     1 polygon; fields FID, NAME, LEGISL, AREA_EN, AREA_FR. editingInfo
+#     dataLastEditDate 2022-01-31, i.e. BEFORE the MLI freeze -- the same
+#     vintage as the zip, just parked somewhere still maintained.
+#
+# Authoritative human cross-check (Manitoba Transportation and Infrastructure,
+# the department that issues the DFA permits):
+#   https://www.gov.mb.ca/mti/wms/permit/designated.html
+#   https://www.gov.mb.ca/mti/wms/structures/pdf/rrvdfa_boundary.pdf
+#   https://www.gov.mb.ca/mti/wms/structures/pdf/lower_rrvdfa_boundary.pdf
+#
+# CAVEAT ON THE EVIDENCE: an ArcGIS editingInfo date proves the layer was
+# edited, not that the boundary polygon moved -- an attribute or schema touch
+# bumps the same field. Confirming an actual boundary change needs a geometry
+# diff of DFA_final against data/dfa_all.geojson and
+# data/dfa_lower_red_river.geojson. That diff has NOT been run.
+#
+# DELIBERATELY NOT CHANGED: the three URLs below still point at MLI. Silently
+# repointing a statutory boundary would change what client-facing appraisal
+# text asserts, and the DFA repoint is not a URL swap -- it merges two layers
+# into one and changes the schema, the feature count, and the source citation
+# carried through data/layers.yml into the report footer. Jason decides.
+# Until he does, treat any DFA / RRVSMA refresh from this script as a re-pull
+# of 2022 data, NOT as evidence that the boundary is current.
+# =============================================================================
+
 suppressPackageStartupMessages({
   library(sf)
   library(httr2)
