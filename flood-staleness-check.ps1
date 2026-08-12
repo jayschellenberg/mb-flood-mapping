@@ -126,21 +126,38 @@ if (-not (Test-Path $AlertLib)) {
 
 # One reminder per calendar month PER KIND of alert. Each kind owns its own
 # stamp file so an age reminder never suppresses a drift reminder (they have
-# different causes and different fixes). Returns $true when the alert either
-# went out or was legitimately deduped, $false only when no channel worked.
+# different causes and different fixes). Returns $true when the alert was
+# VERIFIABLY delivered or legitimately deduped, $false when delivery could not
+# be verified (caller turns that into exit 1).
+#
+# 2026-08-12: the month stamp is written only on verified delivery. It used to
+# be gated on Send-FailureAlert's boolean, which is true if EITHER channel
+# worked -- but Send-AlertPush returns true on any HTTP 200 from ntfy, and an
+# anonymous publish returns 200 for any topic even with zero subscribers. So on
+# the day the SMTP app password is revoked, this watchdog would stamp anyway and
+# then suppress itself for the rest of the month. Test-AlertDelivered
+# (mb-parcelsearch\alert-lib.ps1) accepts a real email, or push alone when email
+# is not configured at all; email configured but failing leaves the stamp
+# untouched so the next run tries again.
 function Send-MonthlyAlert([string]$stampPath, [string]$title, [string]$body) {
   $stampVal = (Get-Date).ToString('yyyy-MM')
   if ((Test-Path $stampPath) -and ((Get-Content $stampPath -Raw).Trim() -eq $stampVal)) {
     Write-Host "Already reminded this month ($stampVal): $title -- skipping."
     return $true
   }
-  if (Send-FailureAlert $ParcelSearchRoot $NtfyTopic $title $body) {
+  $sent = Send-FailureAlert $ParcelSearchRoot $NtfyTopic $title $body
+  if (Test-AlertDelivered) {
     New-Item -ItemType Directory -Force -Path (Split-Path $stampPath) | Out-Null
     Set-Content -Path $stampPath -Value $stampVal
     Write-Host "Alert sent: $title"
     return $true
   }
-  Write-Warning "Alert NOT sent ($title) -- no channel succeeded."
+  if ($sent) {
+    Write-Warning ("Alert went out on PUSH ONLY ($title) -- email is configured but FAILED. " +
+                   'Stamp NOT written; the next run will try again. Check the app password.')
+  } else {
+    Write-Warning "Alert NOT sent ($title) -- no channel succeeded."
+  }
   return $false
 }
 
