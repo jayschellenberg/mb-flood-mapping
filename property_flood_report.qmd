@@ -86,7 +86,7 @@ layer_files <- list(
   `Winnipeg Waterway — Creeks (76 m)`       = list(path = "data/wpg_waterway_creek_corridor.geojson", color = "#5ebadf")
 )
 
-popup_html <- sprintf("<b>%s</b><br/>%.5f, %.5f", params$address, params$lat, params$lon)
+popup_html <- sprintf("<b>%s</b><br/>%.5f, %.5f", htmltools::htmlEscape(params$address), params$lat, params$lon)
 
 red_icon <- awesomeIcons(icon = "home", library = "fa",
                          markerColor = "red", iconColor = "white")

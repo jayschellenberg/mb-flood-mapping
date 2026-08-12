@@ -294,10 +294,16 @@ const subjectIcon = L.divIcon({
   tooltipAnchor: [0, -40],
 });
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+}
+
 function setSubjectMarker(lat, lon, address) {
   if (state.subjectMarker) state.map.removeLayer(state.subjectMarker);
   state.subjectMarker = L.marker([lat, lon], { icon: subjectIcon, zIndexOffset: 1000 })
-    .bindPopup(`<b>${address}</b><br/>${lat.toFixed(5)}, ${lon.toFixed(5)}`)
+    .bindPopup(`<b>${escapeHtml(address)}</b><br/>${lat.toFixed(5)}, ${lon.toFixed(5)}`)
     .bindTooltip(address, { permanent: true, direction: "top", offset: [0, -40], className: "subject-tip" })
     .addTo(state.map);
 }
@@ -461,7 +467,7 @@ async function run() {
     screen(); // run once on load
   } catch (err) {
     paragraphEl.className = "paragraph";
-    paragraphEl.innerHTML = `<span class="status err">Load failed: ${err.message}</span>`;
+    paragraphEl.innerHTML = `<span class="status err">Load failed: ${escapeHtml(err.message)}</span>`;
   }
 }
 
