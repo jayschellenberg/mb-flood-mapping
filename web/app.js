@@ -216,7 +216,7 @@ function renderTable(rows) {
 
 function initMap() {
   const tileOpts = { crossOrigin: "anonymous" };
-  const roads = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { ...tileOpts, attribution: "© OpenStreetMap contributors © CARTO", maxZoom: 19 });
+  const roads = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_2r5c_1_12c531426d9aa092a601b7da", { ...tileOpts, attribution: "© OpenStreetMap contributors © CARTO", maxZoom: 19 });
   const sat   = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { ...tileOpts, attribution: "Tiles © Esri" });
 
   state.map = L.map("map", { layers: [roads], preferCanvas: false }).setView([49.8872, -97.1308], 12);
