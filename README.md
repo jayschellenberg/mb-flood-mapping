@@ -1,5 +1,7 @@
 # MBFloodMapping — Manitoba Flood-Screening Tool
 
+Status: Dormant | Next: tbd | Blocked: none | Updated: 2026-11-01
+
 Reusable appraisal tool that screens a subject property against published Manitoba flood, regulatory, and waterway-corridor layers and produces (a) a copy-ready written paragraph for the appraisal narrative, (b) a screening table, and (c) an interactive Leaflet map.
 
 Two front ends share the same authoritative data cache:
