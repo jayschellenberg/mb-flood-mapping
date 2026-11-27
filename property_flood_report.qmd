@@ -93,7 +93,7 @@ red_icon <- awesomeIcons(icon = "home", library = "fa",
 
 m <- leaflet() |>
   addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") |>
-  addProviderTiles(providers$CartoDB.Positron, group = "Roads") |>
+  addTiles(urlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_2r5c_1_12c531426d9aa092a601b7da", attribution = "&copy; OpenStreetMap contributors &copy; CARTO", options = tileOptions(subdomains = "abcd", maxZoom = 20), group = "Roads") |>
   setView(lng = params$lon, lat = params$lat, zoom = params$zoom) |>
   addScaleBar(position = "bottomleft")
 

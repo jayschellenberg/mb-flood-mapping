@@ -172,7 +172,7 @@ server <- function(input, output, session) {
 
   output$map <- renderLeaflet({
     m <- leaflet() |>
-      addProviderTiles(providers$CartoDB.Positron, group = "Roads") |>
+      addTiles(urlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_2r5c_1_12c531426d9aa092a601b7da", attribution = "&copy; OpenStreetMap contributors &copy; CARTO", options = tileOptions(subdomains = "abcd", maxZoom = 20), group = "Roads") |>
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") |>
       setView(lng = input$lon, lat = input$lat, zoom = input$zoom) |>
       addScaleBar(position = "bottomleft")
